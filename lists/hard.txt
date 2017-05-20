@@ -1,12 +1,9 @@
-a
-aah
 aahed
 aahing
 aahs
 aardvark
 aardvarks
 aardwolf
-ab
 abaci
 aback
 abacus
@@ -79,7 +76,6 @@ abbreviation
 abbreviations
 abbreviator
 abbreviators
-abc
 abdicable
 abdicate
 abdicated
@@ -205,7 +201,6 @@ abnormalities
 abnormality
 abnormally
 abnormals
-abo
 aboard
 abode
 aboded
@@ -313,7 +308,6 @@ abrupter
 abruptest
 abruptly
 abruptness
-abs
 abscam
 abscess
 abscessed
@@ -860,7 +854,6 @@ acknowledges
 acknowledging
 acknowledgment
 acknowledgments
-aclu
 acme
 acmes
 acne
@@ -4789,8 +4782,6 @@ ardours
 arduous
 arduously
 arduousness
-are
-area
 areal
 areas
 areaway
@@ -4904,13 +4895,11 @@ arizonan
 arizonans
 arizonian
 arizonians
-ark
 arkansan
 arkansans
 arkansas
 arks
 arlington
-arm
 armada
 armadas
 armadillo
@@ -5357,7 +5346,6 @@ aspish
 asps
 asquint
 asramas
-ass
 assafoetida
 assagai
 assagais
@@ -40507,7 +40495,8 @@ glanced
 glances
 glancing
 glancingly
-gland
+gland
+
 glanders
 glandes
 glands

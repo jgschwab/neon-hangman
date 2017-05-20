@@ -16,6 +16,9 @@
  */
 #define PADDING 40
 
+/** The default buffer size for input strings */
+#define BUFFER_SIZE 256
+
 /**
  * The strcuture definition of a game Board
  */
