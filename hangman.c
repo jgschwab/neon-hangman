@@ -145,10 +145,12 @@ int main(void){
     pickedTheme = true;
   }  
   
-  if(!pickedTheme)
+  if(!pickedTheme){
     printf("Easy words - the default list, since you didn't\n"
            "select at least one list\n");
-    
+    system("cat lists/easy.txt > lists/customList.txt");
+  }
+  
   printf("\n\e[95mStarting Game");
   for(int i = 0; i < 47; i++){
     unsigned int endTime = clock() + (unsigned int)(CLOCKS_PER_SEC * 0.07);
@@ -198,6 +200,12 @@ int main(void){
       }
       char letter[2] = {tolower(ch[0]), '\0'};
       
+      if(letter[0] < 'a' || letter[0] > 'z'){
+        printBoard(&board);
+        printf("Not a letter. Try another: ");
+        continue;
+      }
+      
       //Check to see if letter has already been guessed
       if(strpbrk(board.usedLetters, letter)){ 
         printBoard(&board);
@@ -235,6 +243,15 @@ int main(void){
     
     printf("Play again (y/n)? ");
     scanf("%s", playAgain);
+    while(strcmp(playAgain, "y") && strcmp(playAgain, "n") && 
+          strcmp(playAgain, "Y") && strcmp(playAgain, "N") &&
+          strcmp(playAgain, "yes") && strcmp(playAgain, "no") &&
+          strcmp(playAgain, "Yes") && strcmp(playAgain, "No") &&
+          strcmp(playAgain, "YES") && strcmp(playAgain, "NO")){
+      printf("yeah, I don't know what that means.\nTry again, buddy (y/n): ");
+      scanf("%s", playAgain);
+    }
+    
   }
   
   printf("You won %d out of %d games (%d%%)\n", 
@@ -244,6 +261,7 @@ int main(void){
 }
 
 
+// PRINT THE GAME DISPLAY BOARD
 void printBoard(Board *board){
   for(int i = 0; i < PADDING; i++){
     printf("\n");
