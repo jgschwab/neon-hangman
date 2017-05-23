@@ -24,7 +24,7 @@ int main(void){
   printf("\u2557");
   
   
-  printf("\n\u2551                 \e[93mWelcome to \e[1m\e[95mNEON "
+  printf("\n\u2551                 Welcome to \e[1m\e[95mNEON "
          "HANGMAN\e[0m                  \e[94m\u2551\n"
          "\u2551\e[33m Choose a theme...or \e[4mcombine\e[24m multiple themes "
          "by stringing \e[94m\u2551\n"
@@ -42,19 +42,19 @@ int main(void){
          
   printf("\u2551 \e[32mLANGUAGE-BASED THEMES               "
          "MISCELLANEOUS THEMES \e[94m\u2551\n\u2551 \e[0m"
-         "[0] - easy words                    [7] - animals"
+         "[0] - \e[93measy words\e[0m                    [7] - \e[93manimals"
          "        \e[94m\u2551\n\u2551 \e[0m"
-         "[1] - harder words                  [8] - astronomy"
+         "[1] - \e[93mharder words\e[0m                  [8] - \e[93mastronomy"
          "      \e[94m\u2551\n\u2551 \e[0m"
-         "[2] - common words                  [9] - anatomy"
+         "[2] - \e[93mcommon words\e[0m                  [9] - \e[93manatomy"
          "        \e[94m\u2551\n\u2551 \e[0m"
-         "[3] - compound words                [A] - computers"
+         "[3] - \e[93mcompound words\e[0m                [A] - \e[93mcomputers"
          "      \e[94m\u2551\n\u2551 \e[0m"
-         "[4] - verbs                         [B] - countries"
+         "[4] - \e[93mverbs\e[0m                         [B] - \e[93mcountries"
          "      \e[94m\u2551\n\u2551 \e[0m"
-         "[5] - nouns                         [C] - elements"
+         "[5] - \e[93mnouns\e[0m                         [C] - \e[93melements"
          "       \e[94m\u2551\n\u2551 \e[0m"
-         "[6] - adjectives                    [D] - landforms"
+         "[6] - \e[93madjectives\e[0m                    [D] - \e[93mlandforms"
          "      \e[94m\u2551\n");  
          
   printf("\u255A");       
@@ -76,7 +76,7 @@ int main(void){
   int i = 0;
   char optionsFiltered[15] = "";
   
-  printf("Word list includes:\n\e[92m");
+  printf("Word list includes:\n\e[93m");
   if(strpbrk(options, "0")){
     system("cat lists/easy.txt >> lists/customList.txt");
     printf("easy words\n");
@@ -173,7 +173,7 @@ int main(void){
   
   printf("\n\e[95mStarting Game");
   for(int i = 0; i < 47; i++){
-    unsigned int endTime = clock() + (unsigned int)(CLOCKS_PER_SEC * 0.07);
+    unsigned int endTime = clock() + (unsigned int)(CLOCKS_PER_SEC * 0.05);
     while((unsigned int)clock() < endTime){}
     printf(".");
     fflush(stdout);
@@ -303,6 +303,8 @@ void printBoard(Board *board, char * options){
   char *vert = "\e[32m\u2551\e[0m";
   char *t_right = "\e[32m\u2560";
   char *t_left = "\u2563\e[0m";
+  char *t_down = "\u2566";
+  char *t_up = "\u2569";
   printf("%s", nw_corner);
   for(int i = 0; i < WIDTH - 2; i++){
     printf("%s", horz);
@@ -347,44 +349,83 @@ void printBoard(Board *board, char * options){
   }
   printf("%s\n%s", vert, t_right);
   
-  for(int i = 0; i < WIDTH - 2; i++){
+  for(int i = 0; i < 19; i++){
+    printf("%s", horz);
+  }
+  printf("%s", t_down);
+  for(int i = 0; i < 38; i++){
     printf("%s", horz);
   }
   printf("%s\n%s", t_left, vert);
   
-  for(int i = 0; i < WIDTH / 3; i++){
+  for(int i = 0; i < 19; i++){
     printf(" ");
   }
+  printf("%s", vert);
   // print word list
-  printf("Word List(s):");
-  for(int i = 0; i < ((WIDTH - 1) / 3 * 2) - strlen("Word List(s):"); i++){
+  char wordLists[] = " Word List(s):";
+  printf("%s", wordLists);
+  for(int i = 0; i < ((WIDTH - 1) / 3 * 2) - strlen(wordLists); i++){
     printf(" ");
   }
   printf("%s\n%s", vert, vert);
   
+  //**************
   printf("   \e[1m_____\e[0m");
-  for(int i = 0; i < WIDTH - 10; i++){
+  for(int i = 0; i < 11; i++){
+    printf(" ");
+  }
+  printf("%s", vert);
+  for(int i = 0; i < 38; i++){
     printf(" ");
   }
   printf("%s\n%s", vert, vert);
   
-  printf("   \e[1m|   |\e[0m            ");
-  printf("%s", getTheme(options[0]));
-  
-  
-  for(int i = 0; i < WIDTH - 10; i++){
-    printf(" ");
+  //*************
+  printf("   \e[1m|   |\e[0m           %s", vert);
+  printf(" \e[93m%s\e[0m", getTheme(options[0]));
+  if(strlen(options) > 1){
+    for(int i = 0; i < 18 - strlen(getTheme(options[0])); i++){
+      printf(" ");
+    }
+    printf(" \e[93m%s\e[0m", getTheme(options[1]));
+    for(int i = 0; i < 18 - strlen(getTheme(options[1])); i++){
+      printf(" ");
+    }
+  }
+  else{
+    for(int i = 0; i < 37 - strlen(getTheme(options[0])); i++){
+      printf(" ");
+    }
   }
   printf("%s\n%s", vert, vert);
   
+  //**********
   printf("   \e[1m|   ");
   if(board->wrongGuesses > 0)
-    printf("O");
+    printf("O           \e[0m%s", vert);
   else
-    printf(" ");
-  printf("\e[0m");
-  for(int i = 0; i < WIDTH - 10; i++){
-    printf(" ");
+    printf("            \e[0m%s", vert);
+  if(strlen(options) > 2){
+    printf(" \e[93m%s\e[0m", getTheme(options[2]));
+  }
+  
+  if(strlen(options) > 3){
+    for(int i = 0; i < 18 - strlen(getTheme(options[2])); i++){
+      printf(" ");
+    }
+    printf(" \e[93m%s\e[0m", getTheme(options[3]));
+    for(int i = 0; i < 18 - strlen(getTheme(options[3])); i++){
+      printf(" ");
+    }
+  }else if(strlen(options) == 3){
+    for(int i = 0; i < 37 - strlen(getTheme(options[2])); i++){
+      printf(" ");
+    }
+  }else{
+    for(int i = 0; i < 38; i++){
+      printf(" ");
+    }
   }
   printf("%s\n%s", vert, vert);
   
@@ -392,59 +433,156 @@ void printBoard(Board *board, char * options){
   if(board->wrongGuesses > 1)
     if(board->wrongGuesses > 2)
       if(board->wrongGuesses > 3)
-        printf("/|\\");
+        printf("/|\\          \e[0m%s", vert);
       else
-        printf("/| ");
+        printf("/|           \e[0m%s", vert);
     else
-      printf("/  ");
+      printf("/            \e[0m%s", vert);
   else
-    printf("   ");
+    printf("             \e[0m%s", vert);
   printf("\e[0m");
-  for(int i = 0; i < WIDTH - 11; i++){
-    printf(" ");
+  if(strlen(options) > 4){
+    printf(" \e[93m%s\e[0m", getTheme(options[4]));
+  }
+  
+  if(strlen(options) > 5){
+    for(int i = 0; i < 18 - strlen(getTheme(options[4])); i++){
+      printf(" ");
+    }
+    printf(" \e[93m%s\e[0m", getTheme(options[5]));
+    for(int i = 0; i < 18 - strlen(getTheme(options[5])); i++){
+      printf(" ");
+    }
+  }else if(strlen(options) == 5){
+    for(int i = 0; i < 37 - strlen(getTheme(options[4])); i++){
+      printf(" ");
+    }
+  }else{
+    for(int i = 0; i < 38; i++){
+      printf(" ");
+    }
   }
   printf("%s\n%s", vert, vert);
   
+  
   printf("   \e[1m|   ");
   if(board->wrongGuesses > 4)
-    printf("|");
+    printf("|           \e[0m%s", vert);
   else
-    printf(" ");
-  printf("\e[0m");
-  for(int i = 0; i < WIDTH - 10; i++){
-    printf(" ");
+    printf("            \e[0m%s", vert);
+    
+    
+  if(strlen(options) > 6){
+    printf(" \e[93m%s\e[0m", getTheme(options[6]));
+  }
+  
+  if(strlen(options) > 7){
+    for(int i = 0; i < 18 - strlen(getTheme(options[6])); i++){
+      printf(" ");
+    }
+    printf(" \e[93m%s\e[0m", getTheme(options[7]));
+    for(int i = 0; i < 18 - strlen(getTheme(options[7])); i++){
+      printf(" ");
+    }
+  }else if(strlen(options) == 7){
+    for(int i = 0; i < 37 - strlen(getTheme(options[6])); i++){
+      printf(" ");
+    }
+  }else{
+    for(int i = 0; i < 38; i++){
+      printf(" ");
+    }
   }
   printf("%s\n%s", vert, vert);
   
   printf("   \e[1m|  ");
   if(board->wrongGuesses > 5)
     if(board->wrongGuesses > 6)
-      printf("/ \\");
+      printf("/ \\          \e[0m%s", vert);
     else
-      printf("/  ");
+      printf("/            \e[0m%s", vert);
   else
-    printf("   ");
-  printf("\e[0m");
-  for(int i = 0; i < WIDTH - 11; i++){
-    printf(" ");
+    printf("             \e[0m%s", vert);
+  
+  if(strlen(options) > 8){
+    printf(" \e[93m%s\e[0m", getTheme(options[8]));
+  }
+  if(strlen(options) > 9){
+    for(int i = 0; i < 18 - strlen(getTheme(options[8])); i++){
+      printf(" ");
+    }
+    printf(" \e[93m%s\e[0m", getTheme(options[9]));
+    for(int i = 0; i < 18 - strlen(getTheme(options[9])); i++){
+      printf(" ");
+    }
+  }else if(strlen(options) == 9){
+    for(int i = 0; i < 37 - strlen(getTheme(options[8])); i++){
+      printf(" ");
+    }
+  }else{
+    for(int i = 0; i < 38; i++){
+      printf(" ");
+    }
   }
   printf("%s\n%s", vert, vert);
   
-  printf("   \e[1m|    \e[0m");
-  for(int i = 0; i < WIDTH - 10; i++){
-    printf(" ");
+  
+  printf("   \e[1m|               \e[0m%s", vert);
+  
+  if(strlen(options) > 10){
+    printf(" \e[93m%s\e[0m", getTheme(options[10]));
   }
+  if(strlen(options) > 11){
+    for(int i = 0; i < 18 - strlen(getTheme(options[10])); i++){
+      printf(" ");
+    }
+    printf(" \e[93m%s\e[0m", getTheme(options[11]));
+    for(int i = 0; i < 18 - strlen(getTheme(options[11])); i++){
+      printf(" ");
+    }
+  }else if(strlen(options) == 11){
+    for(int i = 0; i < 37 - strlen(getTheme(options[10])); i++){
+      printf(" ");
+    }
+  }else{
+    for(int i = 0; i < 38; i++){
+      printf(" ");
+    }
+  }
+  
   printf("%s\n%s", vert, vert);
   
-  printf(" \e[1m__|____\e[0m");
-  for(int i = 0; i < WIDTH - 10; i++){
-    printf(" ");
+  printf(" \e[1m__|____\e[0m           %s", vert);
+  if(strlen(options) > 12){
+    printf(" \e[93m%s\e[0m", getTheme(options[12]));
+  }
+  if(strlen(options) > 13){
+    for(int i = 0; i < 18 - strlen(getTheme(options[12])); i++){
+      printf(" ");
+    }
+    printf(" \e[93m%s\e[0m", getTheme(options[13]));
+    for(int i = 0; i < 18 - strlen(getTheme(options[13])); i++){
+      printf(" ");
+    }
+  }else if(strlen(options) == 13){
+    for(int i = 0; i < 37 - strlen(getTheme(options[12])); i++){
+      printf(" ");
+    }
+  }else{
+    for(int i = 0; i < 38; i++){
+      printf(" ");
+    }
   }
   printf("%s\n%s", vert, sw_corner);
   
-  for(int i = 0; i < WIDTH - 2; i++){
+  for(int i = 0; i < 19; i++){
     printf("%s", horz);
   }
+  printf("%s", t_up);
+  for(int i = 0; i < 38; i++){
+    printf("%s", horz);
+  }
+  
   printf("%s\n", se_corner);
 }
 
@@ -475,6 +613,8 @@ char * getTheme(char code){
     case 66:
       return "countries";
     case 67:
+      return "elements";
+    case 68:
       return "landforms";
     default:
       return "\e[91m::ERROR::\e[0m";
