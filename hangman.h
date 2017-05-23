@@ -33,4 +33,6 @@ typedef struct gameBoardTag Board;
  * The function that prints the board in its current state.
  * @param board The board to print, by pointer
  */
-void printBoard(Board *board);
+void printBoard(Board *board, char * options);
+
+char * getTheme(char code);

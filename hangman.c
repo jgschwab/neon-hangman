@@ -65,7 +65,7 @@ int main(void){
   
   char options[BUFFER_SIZE];
   scanf("%s", options);
-  if(strlen(options) > 13){
+  if(strlen(options) > 14){
     printf("Your theme string is too long");
     exit(1);
   }
@@ -73,83 +73,103 @@ int main(void){
   system("echo \"\" > lists/customList.txt"); //clears file
   bool pickedTheme = false;
   
+  int i = 0;
+  char optionsFiltered[15] = "";
+  
   printf("Word list includes:\n\e[92m");
   if(strpbrk(options, "0")){
     system("cat lists/easy.txt >> lists/customList.txt");
     printf("easy words\n");
     pickedTheme = true;
+    optionsFiltered[i++] = '0';
   }
   if(strpbrk(options, "1")){
     system("cat lists/hard.txt >> lists/customList.txt");
     printf("harder words\n");
     pickedTheme = true;
+    optionsFiltered[i++] = '1';
   }
   if(strpbrk(options, "2")){
     system("cat lists/common.txt >> lists/customList.txt");
     printf("common words\n");
     pickedTheme = true;
+    optionsFiltered[i++] = '2';
   }
   if(strpbrk(options, "3")){
     system("cat lists/compound.txt >> lists/customList.txt"); 
     printf("compound words\n");
     pickedTheme = true;
+    optionsFiltered[i++] = '3';
   } 
   if(strpbrk(options, "4")){
     system("cat lists/verbs.txt >> lists/customList.txt");
     printf("verbs\n");
     pickedTheme = true;
+    optionsFiltered[i++] = '4';
   }
   if(strpbrk(options, "5")){
     system("cat lists/nouns.txt >> lists/customList.txt");
     printf("nouns\n");
     pickedTheme = true;
+    optionsFiltered[i++] = '5';
   }
   if(strpbrk(options, "6")){
     system("cat lists/adjectives.txt >> lists/customList.txt");
     printf("adjectives\n");
     pickedTheme = true;
+    optionsFiltered[i++] = '6';
   }
   if(strpbrk(options, "7")){
     system("cat lists/animals.txt >> lists/customList.txt");
     printf("animals\n");
     pickedTheme = true;
+    optionsFiltered[i++] = '7';
   }
   if(strpbrk(options, "8")){
     system("cat lists/astronomy.txt >> lists/customList.txt");  
     printf("astronomy words\n");
     pickedTheme = true;
+    optionsFiltered[i++] = '8';
   }
   if(strpbrk(options, "9")){
     system("cat lists/anatomy.txt >> lists/customList.txt");  
     printf("anatomy words\n");
     pickedTheme = true;
+    optionsFiltered[i++] = '9';
   }
   if(strpbrk(options, "A") || strpbrk(options, "a")){
     system("cat lists/computers.txt >> lists/customList.txt");  
     printf("computer words\n");
     pickedTheme = true;
+    optionsFiltered[i++] = 'A';
   }
   if(strpbrk(options, "B") || strpbrk(options, "b")){
     system("cat lists/countries.txt >> lists/customList.txt");  
     printf("countries\n");
     pickedTheme = true;
+    optionsFiltered[i++] = 'B';
   }
   if(strpbrk(options, "C") || strpbrk(options, "c")){
     system("cat lists/elements.txt >> lists/customList.txt");
     printf("elements\n");
     pickedTheme = true;
+    optionsFiltered[i++] = 'C';
   }
   if(strpbrk(options, "D") || strpbrk(options, "d")){
     system("cat lists/landforms.txt >> lists/customList.txt");
     printf("landforms\n");
     pickedTheme = true;
+    optionsFiltered[i++] = 'D';
   }  
   
   if(!pickedTheme){
     printf("Easy words - the default list, since you didn't\n"
            "select at least one list\n");
     system("cat lists/easy.txt > lists/customList.txt");
+    optionsFiltered[i++] = '0';
   }
+  
+  optionsFiltered[i] = '\0';
   
   printf("\n\e[95mStarting Game");
   for(int i = 0; i < 47; i++){
@@ -188,27 +208,27 @@ int main(void){
     board.wrongGuesses = 0;
     strcpy(board.word, word);
     strcpy(board.usedLetters, "");
-    printBoard(&board);
+    printBoard(&board, optionsFiltered);
     bool won = false;
     printf("\e[95mLetter to submit: ");
     while(!won && board.wrongGuesses < 7){
       scanf("%s", ch);
       if(strlen(ch) != 1){
-        printBoard(&board);
+        printBoard(&board, optionsFiltered);
         printf("\e[95mPlease guess ONE letter: ");
         continue;
       }
       char letter[2] = {tolower(ch[0]), '\0'};
       
       if(letter[0] < 'a' || letter[0] > 'z'){
-        printBoard(&board);
+        printBoard(&board, optionsFiltered);
         printf("Not a letter. Try another: ");
         continue;
       }
       
       //Check to see if letter has already been guessed
       if(strpbrk(board.usedLetters, letter)){ 
-        printBoard(&board);
+        printBoard(&board, optionsFiltered);
         printf("\e[95mLetter already guessed. Try another: ");
         continue;
       }
@@ -228,7 +248,7 @@ int main(void){
           won = false;
       }
       
-      printBoard(&board);
+      printBoard(&board, optionsFiltered);
       printf("\e[95mLetter to submit: ");
     }
     
@@ -262,7 +282,7 @@ int main(void){
 
 
 // PRINT THE GAME DISPLAY BOARD
-void printBoard(Board *board){
+void printBoard(Board *board, char * options){
   for(int i = 0; i < PADDING; i++){
     printf("\n");
   }
@@ -332,7 +352,12 @@ void printBoard(Board *board){
   }
   printf("%s\n%s", t_left, vert);
   
-  for(int i = 0; i < WIDTH - 2; i++){
+  for(int i = 0; i < WIDTH / 3; i++){
+    printf(" ");
+  }
+  // print word list
+  printf("Word List(s):");
+  for(int i = 0; i < ((WIDTH - 1) / 3 * 2) - strlen("Word List(s):"); i++){
     printf(" ");
   }
   printf("%s\n%s", vert, vert);
@@ -343,7 +368,10 @@ void printBoard(Board *board){
   }
   printf("%s\n%s", vert, vert);
   
-  printf("   \e[1m|   |\e[0m");
+  printf("   \e[1m|   |\e[0m            ");
+  printf("%s", getTheme(options[0]));
+  
+  
   for(int i = 0; i < WIDTH - 10; i++){
     printf(" ");
   }
@@ -418,4 +446,37 @@ void printBoard(Board *board){
     printf("%s", horz);
   }
   printf("%s\n", se_corner);
+}
+
+char * getTheme(char code){
+  switch(code){
+    case '0':
+      return "easy";
+    case '1':
+      return "harder";
+    case '2':
+      return "common";
+    case '3':
+      return "compound";
+    case '4':
+      return "verbs";
+    case '5':
+      return "nouns";
+    case '6':
+      return "adjectives";
+    case '7':
+      return "animals";
+    case '8':
+      return "astronomy";
+    case '9':
+      return "anatomy";
+    case 65:
+      return "computers";
+    case 66:
+      return "countries";
+    case 67:
+      return "landforms";
+    default:
+      return "\e[91m::ERROR::\e[0m";
+  }
 }
