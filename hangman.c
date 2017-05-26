@@ -16,8 +16,8 @@
 #include "hangman.h"
 
 int main(void){
-
-  printf("\n\n\e[94m\u2554");
+  system("clear");
+  printf("\e[94m\u2554");
   for(int i = 0; i < WIDTH - 2; i++){
     printf("\u2550");
   }
@@ -66,7 +66,7 @@ int main(void){
   char options[BUFFER_SIZE];
   scanf("%s", options);
   if(strlen(options) > 14){
-    printf("Your theme string is too long");
+    printf("Your theme string is too long\n");
     exit(1);
   }
   
@@ -283,9 +283,7 @@ int main(void){
 
 // PRINT THE GAME DISPLAY BOARD
 void printBoard(Board *board, char * options){
-  for(int i = 0; i < PADDING; i++){
-    printf("\n");
-  }
+  system("clear");
   
   for(int i = 0; i < WIDTH / 2 - 6; i++){
     printf(" ");
@@ -320,19 +318,21 @@ void printBoard(Board *board, char * options){
   for(int i = 0; i < WIDTH - 2; i++){
     printf(" ");
   }
-  printf("%s\n%s", vert, vert);
+  printf("%s\n%s\e[1m", vert, vert);
   
   for(int i = 0; i < strlen(board->word); i++){
     char ch[2] = {board->word[i], '\0'};
     if(strpbrk(board->usedLetters, ch))
-      printf(" \e[96m%c\e[0m", board->word[i]);
+      printf(" \e[96m%c", board->word[i]);
     else
-      printf(" _");
+      printf(" \e[0m\e[1m_");
   }
+  
+  
   for(int i = 0; i < WIDTH - 2 - (2 * strlen(board->word)); i++){
     printf(" ");
   }
-  printf("%s\n%s", vert, t_right);
+  printf("\e[0m%s\n%s", vert, t_right);
   
   for(int i = 0; i < WIDTH - 2; i++){
     printf("%s", horz);

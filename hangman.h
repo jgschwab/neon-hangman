@@ -10,11 +10,6 @@
 #define WIDTH 60
 /** The number of letters in the alphabet */
 #define ALPHABET_SIZE 26
-/** 
- * The padding to place above each print
- * of the game screen
- */
-#define PADDING 40
 
 /** The default buffer size for input strings */
 #define BUFFER_SIZE 256
@@ -35,4 +30,9 @@ typedef struct gameBoardTag Board;
  */
 void printBoard(Board *board, char * options);
 
+/**
+ * Gets the theme string associated with an integer code
+ * @param code The code associated with a theme
+ * @return The theme for the parameterized code
+ */
 char * getTheme(char code);
